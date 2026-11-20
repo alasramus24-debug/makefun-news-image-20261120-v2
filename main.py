@@ -60,12 +60,20 @@ def output_directory() -> Path:
 
 
 def deliver(data: bytes, directory: Path) -> Path:
-    """Write the image into the output directory and verify the copy."""
+    """Write the image into the output directory and verify the copy.
+
+    The bytes land in a scratch file first and are renamed onto the
+    final name only once they verify, so the output directory never
+    holds a half-written or mismatched entry.png.
+    """
     directory.mkdir(parents=True, exist_ok=True)
     target = directory / IMAGE_NAME
-    target.write_bytes(data)
-    if hashlib.sha256(target.read_bytes()).digest() != hashlib.sha256(data).digest():
+    scratch = directory / (IMAGE_NAME + ".part")
+    scratch.write_bytes(data)
+    if hashlib.sha256(scratch.read_bytes()).digest() != hashlib.sha256(data).digest():
+        scratch.unlink(missing_ok=True)
         raise DeliveryError("written image does not match the bundled image")
+    os.replace(scratch, target)
     return target
 
 

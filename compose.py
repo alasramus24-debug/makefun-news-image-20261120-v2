@@ -122,11 +122,11 @@ def flag_russia(draw, x, y, w, h):
 
 def summit_graphic(draw, top):
     """Three flags on poles above a summit table, with name labels."""
-    flag_w, flag_h = 126, 80
+    flag_w, flag_h = 126, 64
     centers = (212, 512, 812)
     flags = (flag_united_states, flag_china, flag_russia)
     labels = ("UNITED STATES", "CHINA", "RUSSIA")
-    table_y = top + flag_h + 30
+    table_y = top + flag_h + 22
     for cx, draw_flag in zip(centers, flags):
         draw.line([cx, top - 4, cx, table_y], fill=INK, width=4)
         draw_flag(draw, cx - flag_w // 2, top, flag_w, flag_h)
@@ -137,7 +137,7 @@ def summit_graphic(draw, top):
     label_font = font(SANS_BOLD, 21)
     for cx, label in zip(centers, labels):
         draw.text((cx, table_y + 20), label, font=label_font, fill=INK, anchor="ma")
-    return table_y + 48
+    return table_y + 45
 
 
 # --- page sections --------------------------------------------------------
@@ -145,61 +145,61 @@ def summit_graphic(draw, top):
 def masthead(draw):
     y = 38
     draw.line([MARGIN, y, SIZE - MARGIN, y], fill=INK, width=3)
-    title_font = fit(draw, "THE DAILY SIGNAL", SERIF_BOLD, 900, 104)
+    title_font = fit(draw, "THE DAILY SIGNAL", SERIF_BOLD, 900, 98)
     y = centered(draw, y + 10, "THE DAILY SIGNAL", title_font) + 8
     draw.line([MARGIN, y, SIZE - MARGIN, y], fill=INK, width=2)
-    y = centered(draw, y + 8, "FRIDAY · 20 NOVEMBER 2026", font(SANS_BOLD, 41), fill=RED)
+    y = centered(draw, y + 8, "FRIDAY · 20 NOVEMBER 2026", font(SANS_BOLD, 38), fill=RED)
     draw.rectangle([MARGIN, y + 10, SIZE - MARGIN, y + 17], fill=INK)
-    return y + 34
+    return y + 26
 
 
 def hero(draw, y):
     tracked(draw, MARGIN, y, "SHENZHEN · FIRST TRILATERAL SUMMIT",
             font(SANS_BOLD, 26), RED)
-    y += 40
-    head_font = font(SANS_BOLD, 54)
+    y += 34
+    head_font = font(SANS_BOLD, 48)
     headline = "TRUMP, XI AND PUTIN HOLD FIRST TRILATERAL SUMMIT IN SHENZHEN"
     for line in wrap(draw, headline, head_font, WIDTH):
         draw.text((MARGIN, y), line, font=head_font, fill=INK)
-        y += 64
+        y += 55
     standfirst = ("Three leaders meet face to face and issue "
                   "a four-point peace declaration.")
     stand_font = fit(draw, standfirst, SERIF_ITALIC, WIDTH, 28)
     draw.text((MARGIN, y + 4), standfirst, font=stand_font, fill=SOFT)
-    y += 44
-    return summit_graphic(draw, y + 6)
+    y += 33
+    return summit_graphic(draw, y + 4)
 
 
 def panel(draw, y, kicker, headline, standfirst):
     tracked(draw, MARGIN, y, kicker, font(SANS_BOLD, 21), BLUE)
-    y += 29
+    y += 26
     head_font = fit(draw, headline, SANS_BOLD, WIDTH, 34, 24)
     draw.text((MARGIN, y), headline, font=head_font, fill=INK)
-    y += 41
+    y += 33
     stand_font = fit(draw, standfirst, SERIF_ITALIC, WIDTH, 24)
     draw.text((MARGIN, y), standfirst, font=stand_font, fill=SOFT)
-    return y + 30
+    return y + 31
 
 
 def rule(draw, y):
     draw.line([MARGIN, y, SIZE - MARGIN, y], fill=INK, width=2)
-    return y + 14
+    return y + 9
 
 
 def footer(draw):
     lines = [
         "UK PLEDGES 1,000+ DRONES FOR UKRAINE IN A £260M PACKAGE",
-        "UKRAINE HITS THE KERCH BRIDGE AGAIN",
+        "UKRAINE HITS KERCH BRIDGE AGAIN · CYCLONE XAVIER IN THE PACIFIC",
         "EUROPEAN ALLIES IN BERLIN READY FOR TALKS WITH RUSSIA",
-        "COP31 ROW: FOSSIL FUELS DROP FROM DRAFT DEAL · CYCLONE XAVIER TRACKED",
+        "COP31 ROW: FOSSIL FUELS DROP FROM THE DRAFT DEAL",
     ]
-    top = SIZE - 148
+    top = SIZE - 142
     draw.rectangle([26, top, SIZE - 26, SIZE - 26], fill=INK)
-    fnt = font(SANS_BOLD, 22)
-    y = top + 13
+    y = top + 10
     for line in lines:
+        fnt = fit(draw, line, SANS_BOLD, 920, 22)
         centered(draw, y, line, fnt, fill=WHITE)
-        y += 30
+        y += 26
     return SIZE - 26
 
 
@@ -211,7 +211,7 @@ def compose():
 
     y = masthead(draw)
     y = hero(draw, y)
-    y = rule(draw, y + 4)
+    y = rule(draw, y + 2)
     y = panel(draw, y, "NEW YORK · MARKETS",
               "ANTHROPIC SOARS IN RECORD STOCK-MARKET DEBUT",
               "The first pure AI company to list jumps on day one, "
